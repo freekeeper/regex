@@ -160,17 +160,62 @@ bench_match!(medium_1MB, medium!(), get_text(TXT_1MB, medium_suffix()));
 fn hard_suffix() -> String {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
 }
-
+fn empty_suffix() -> String {
+    "".to_string()
+}
 macro_rules! hard {
     () => {
         r"[ -~]*ABCDEFGHIJKLMNOPQRSTUVWXYZ$"
     };
 }
 
+macro_rules! dot_star {
+    () => {
+        r".*"
+    };
+}
+macro_rules! dot_star_dollar {
+    () => {
+        r".*$"
+    };
+}
+macro_rules! dot_star_capture {
+    () => {
+        r"((.*)()()($))"
+    };
+}
+
+macro_rules! begin_dot_star_end {
+    () => {
+        r"^.*"
+    };
+}
+macro_rules! begin_dot_star_dollar_end {
+    () => {
+        r"^.*$"
+    };
+}
+macro_rules! begin_dot_star_capture_end {
+    () => {
+        r"^((.*)()()($))"
+    };
+}
+
+bench_match!(is_match_dot_star, dot_star!(), get_text(TXT_1K, empty_suffix()));
+bench_match!(is_match_dot_star_dollar, dot_star_dollar!(), get_text(TXT_1K, empty_suffix()));
+bench_match!(is_match_dot_star_capture, dot_star_capture!(), get_text(TXT_1K, empty_suffix()));
+
+bench_match!(is_match_begin_dot_star_end, begin_dot_star_end!(), get_text(TXT_1K, empty_suffix()));
+bench_match!(is_match_begin_dot_star_dollar_end, begin_dot_star_dollar_end!(), get_text(TXT_1K, empty_suffix()));
+bench_match!(is_match_begin_dot_star_capture_end, begin_dot_star_capture_end!(), get_text(TXT_1K, empty_suffix()));
+
+
 bench_match!(hard_32, hard!(), get_text(TXT_32, hard_suffix()));
 bench_match!(hard_1K, hard!(), get_text(TXT_1K, hard_suffix()));
 bench_match!(hard_32K, hard!(), get_text(TXT_32K, hard_suffix()));
 bench_match!(hard_1MB, hard!(), get_text(TXT_1MB, hard_suffix()));
+
+
 
 fn reallyhard_suffix() -> String {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
